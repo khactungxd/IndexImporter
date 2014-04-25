@@ -1,0 +1,21 @@
+html
+    head
+        title XmlReView
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        script(src='/javascripts/jquery-1.9.0.min.js')
+    body()
+        h2 List Your XML:
+        table(border=1, style="font-size:small")
+            tbody
+                tr
+                    th Count
+                    th OrderID
+                    th Link
+                -for (var i = 0; i < arrListFileXml.length; i++){
+                    tr(valigin="top")
+                        th #{i+1}
+                        th
+                            p(style="text-align:left") #{arrListFileXml[i]}
+                        th
+                            a(href="/xml/#{arrListFileXml[i]}.xml") Link
+                -}

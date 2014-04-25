@@ -1,0 +1,15 @@
+html
+    head
+        title EmailArchiver
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        script(src='/javascripts/jquery-1.9.0.min.js')
+    body()
+        div(id="postdiv")
+            h2(style='text-align: center') Parse HTML to XML
+            form(action="process",method="post",enctype="multipart/form-data",style='padding-left: 20px; padding-bottom: 10px')
+                label(for="file") HTML:
+                input(type="file", name="htmlfile")
+                br
+                br
+                br
+                input(type="submit",name="submit",value="Convert")
