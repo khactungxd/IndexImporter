@@ -13,9 +13,9 @@ exports.htmlReading = function (req, res) {
         fs.mkdirsSync('./public/xml/'+FileName);
         fs.writeFileSync('./public/xml'+FileName+'/addSuccess.txt', 'List Of OrderID add Success');
         fs.writeFileSync('./public/xml'+FileName+'/addFail.txt', 'List Of OrderID add Fail');
-        fs.mkdirsSync('./public/xml/'+files[t]+'/success/');
-        fs.mkdirsSync('./public/xml/'+files[t]+'/fail/');
-        fs.readFile(req.files.htmlfile.path, function (err, data) {
+        fs.mkdirsSync('./public/xml/'+FileName+'/success/');
+        fs.mkdirsSync('./public/xml/'+FileName+'/fail/');
+        fs.readFile('../../mnt/data/Index/'+'FileName', function (err, data) {
 //          emptyDirectory('./public/xml/');
           if (!err) {
             StringofHTml = data.toString();
