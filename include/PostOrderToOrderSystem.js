@@ -4,7 +4,7 @@ var path = require('path');
 var async = require('async');
 var request = require('request');   // npm install request
 
-exports.execute = function (OrderString, OrderID, cb) {
+exports.execute = function (OrderString, OrderID, nameFolder, cb) {
   var params = {
     "orderarchive-only": true,
     "order": OrderString.toString(),
@@ -25,14 +25,17 @@ exports.execute = function (OrderString, OrderID, cb) {
     , function (error, response, body) {
       if(response.statusCode == 200){
         //write OrderString to xml post success
-        fs.writeFileSync('./public/xml/success/' + OrderID + '.xml', OrderString);
-        console.log("success: "+OrderID);
+        fs.writeFileSync('./public/xml/'+nameFolder+'/success/' + OrderID + '.xml', OrderString);
+        fs.appendFile('./public/xml/'+nameFolder+'/addSuccess.txt', OrderID+'\n', function(err){
+
+        });
       }
       else{
         // write OrderString to xml post fail
-        fs.writeFileSync('./public/xml/fail/' + OrderID + '.xml', OrderString);
-        console.log("fail: "+OrderID);
-        console.log("err: ",response);
+        fs.writeFileSync('./public/xml/'+nameFolder+'/fail/' + OrderID + '.xml', OrderString);
+        fs.appendFile('./public/xml/'+nameFolder+'/addFail.txt', OrderID+'\n', function(err){
+
+        });
       }
       cb();
     }

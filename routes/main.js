@@ -6,9 +6,15 @@ var POSTORDERTOORDERSYSTEM = require('../include/PostOrderToOrderSystem');
 exports.htmlReading = function (req, res) {
   var StringofHTml = '';
   if (req.files.htmlfile.name) {
-//  fs.readdir('./HTML', function (err, files) {
-//    if (!err) {
-//      for (var t = 0; t < files.length; t++) {
+  fs.readdir('../../mnt/data/Index', function (err, files) {
+    if (!err) {
+      for (var t = 0; t < 9; t++) {
+        var FileName = files[t];
+        fs.mkdirsSync('./public/xml/'+FileName);
+        fs.writeFileSync('./public/xml'+FileName+'/addSuccess.txt', 'List Of OrderID add Success');
+        fs.writeFileSync('./public/xml'+FileName+'/addFail.txt', 'List Of OrderID add Fail');
+        fs.mkdirsSync('./public/xml/'+files[t]+'/success/');
+        fs.mkdirsSync('./public/xml/'+files[t]+'/fail/');
         fs.readFile(req.files.htmlfile.path, function (err, data) {
 //          emptyDirectory('./public/xml/');
           if (!err) {
@@ -92,13 +98,8 @@ exports.htmlReading = function (req, res) {
               var xml = new GENERATE2XML(arrContent[i], arrContent2[i], arrayName, indexOfOrderID, indexOfProcessID, indexOfStackID).generateXML();
               fs.writeFileSync('./public/xml/' + arrContent2[i][0][indexOfOrderID] + '.xml', xml);
               arrListFileXml.push(arrContent2[i][0][indexOfOrderID]);
-//              fs.readFile('./public/xml/fail/201104142159266971012956D7BD9E636F3D2A43E581C8907645C00000000112983c388.xml', function(err, data){
-//                if(!err){
-//              POSTORDERTOORDERSYSTEM.execute(xml, arrContent[i][0].pi_order_id_str, function () {
-//                  });
-//                }
-//              });
-
+              POSTORDERTOORDERSYSTEM.execute(xml, arrContent2[i][0][indexOfOrderID], FileName, function () {
+                  });
             }
             res.render('xmlView', { arrListFileXml: arrListFileXml });
           }
@@ -109,13 +110,13 @@ exports.htmlReading = function (req, res) {
           }
         });
       }
-//    }
-//    else {
-//      console.log("in else: ", err);
-//    }
-//  });
+    }
+    else {
+      console.log("in else: ", err);
+    }
+  });
   }
-//}
+}
 
 function emptyDirectory(path) {
   try {
