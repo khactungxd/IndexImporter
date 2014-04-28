@@ -32,6 +32,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+//app.get('/', main.htmlReading);
 app.post('/process', main.htmlReading);
 
 

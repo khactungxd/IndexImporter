@@ -9,14 +9,15 @@ function processAStack(cb) {
     if(!err){
       var params = {
         "orderarchive-only" : true,
-        "order" : orderXML,
+        "order" : orderXML.toString(),
         "response-format" : "json"
       }
 
       request(
         {
           method: 'POST',
-          url: 'https://wackler-int.oxseed.com/oxseed/orderbase/wackler',
+//          url: 'http://192.168.16.235:8090/order',
+          url: 'https://wackler-int.oxseed.com/oxseed/orderbase/wackler/order',
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             "charset" : "utf-8"
