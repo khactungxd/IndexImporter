@@ -1,4 +1,4 @@
-var OrderSchema = require('../schema/Order.Class_1.js');
+var OrderSchema = require('../schema/Order.Class.js');
 var js2xmlparser = require("js2xmlparser");
 
 //------------------------------------------------------ order ------------------------------
@@ -47,6 +47,10 @@ GENERATE2XML.prototype.generateXML = function () {
 
     //Creat Process IndexField
     var arrIndexFieldProcess = [];
+    var pi_migrated_from_prod = new OrderSchema.IndexField();;
+    pi_migrated_from_prod.name = "pi_migrated_from_prod";
+    pi_migrated_from_prod.value = "true";
+    arrIndexFieldProcess.push(pi_migrated_from_prod);
     for(var t = 0; t < this.arrayName.length; t++){
       if(this.arr2[i][0][t]&&this.arrayName[t].indexOf("pi_")==0){
         var tempOb = new OrderSchema.IndexField();

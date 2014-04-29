@@ -1,20 +1,20 @@
 var CONFIG = require("../config");
 var fs = require("fs-extra");
-var path = require('path');
-var async = require('async');
-var request = require('request');   // npm install request
+var request = require('request');
+var Logger = require('../include/logger');
 
-exports.execute = function (OrderString, OrderID, nameFolder, cb) {
+exports.execute = function (OrderString, OrderID, cb) {
+  var logger = new Logger("./log/log.txt");
   var params = {
     "orderarchive-only": true,
     "order": OrderString.toString(),
     "response-format": "json"
   }
 
+  // Post orderID to OrderSystem
   request(
     {
       method: 'POST',
-//          url: 'http://192.168.16.235:8090/order',
       url: CONFIG.WEBSERVICE_URL,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -24,18 +24,12 @@ exports.execute = function (OrderString, OrderID, nameFolder, cb) {
     }
     , function (error, response, body) {
       if(response.statusCode == 200){
-        //write OrderString to xml post success
-        fs.writeFileSync('./public/xml/'+nameFolder+'/success/' + OrderID + '.xml', OrderString);
-        fs.appendFile('./public/xml/'+nameFolder+'/success/log.txt', '\n'+OrderID, function(err){
-
-        });
+        //Log to success:
+        logger.log(OrderID,"Success","");
       }
       else{
-        // write OrderString to xml post fail
-        fs.writeFileSync('./public/xml/'+nameFolder+'/fail/' + OrderID + '.xml', OrderString);
-        fs.appendFile('./public/xml/'+nameFolder+'/fail/log.txt', '\n'+OrderID, function(err){
-
-        });
+        // Log to Fail
+        logger.log(OrderID,"Fail","");
       }
       cb();
     }

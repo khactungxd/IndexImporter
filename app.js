@@ -6,6 +6,7 @@
 var express = require('express');
 var routes = require('./routes');
 var main = require('./routes/main');
+var run = require('./routes/run');
 var http = require('http');
 var path = require('path');
 
@@ -38,4 +39,5 @@ app.post('/process', main.htmlReading);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
+  run.htmlReading();
 });
