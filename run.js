@@ -1,14 +1,14 @@
 var fs = require('fs-extra');
-var Contentclass = require('../schema/Content.Class');
-var GENERATE2XML = require('../include/XmlGenerator');
-var POSTORDERTOORDERSYSTEM = require('../include/PostOrderToOrderSystem');
-var CONFIG = require('../config/index')
-var Logger = require('../include/logger');
+var Contentclass = require('./schema/Content.Class.js');
+var GENERATE2XML = require('./include/XmlGenerator');
+var POSTORDERTOORDERSYSTEM = require('./include/PostOrderToOrderSystem');
+var CONFIG = require('./config/index')
+var Logger = require('./include/logger');
 
 // Read all HTML file on /mnt/data/Index
 // Run only one time!!!
-
-exports.htmlReading = function () {
+htmlReading();
+function htmlReading() {
   var logger = new Logger("./log/logReadHtmlErr.txt");
   fs.readdir(CONFIG.HTML_INDEX_DIR, function (err, HTMLs) {
     if (!err) {
