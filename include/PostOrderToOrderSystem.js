@@ -26,14 +26,14 @@ exports.execute = function (OrderString, OrderID, nameFolder, cb) {
       if(response.statusCode == 200){
         //write OrderString to xml post success
         fs.writeFileSync('./public/xml/'+nameFolder+'/success/' + OrderID + '.xml', OrderString);
-        fs.appendFile('./public/xml/'+nameFolder+'/addSuccess.txt', OrderID+'\n', function(err){
+        fs.appendFile('./public/xml/'+nameFolder+'/success/log.txt', '\n'+OrderID, function(err){
 
         });
       }
       else{
         // write OrderString to xml post fail
         fs.writeFileSync('./public/xml/'+nameFolder+'/fail/' + OrderID + '.xml', OrderString);
-        fs.appendFile('./public/xml/'+nameFolder+'/addFail.txt', OrderID+'\n', function(err){
+        fs.appendFile('./public/xml/'+nameFolder+'/fail/log.txt', '\n'+OrderID, function(err){
 
         });
       }

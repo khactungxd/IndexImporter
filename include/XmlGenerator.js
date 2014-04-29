@@ -9,8 +9,8 @@ var GENERATE2XML = function (orderarr, orderarr2, arrayName, orderIndex, process
   this.arr = orderarr;
   this.arr2 = orderarr2;
   this.arrayName = arrayName;
-  this.orderId = orderarr2[0][orderIndex];
-  this.stackId = orderarr2[0][stackIndex];
+  this.orderId = orderarr2[0][0][orderIndex];
+  this.stackId = orderarr2[0][0][stackIndex];
   this.processIndex = processIndexin;
 //  this.processId = orderarr.pi_process_id_str;
   this.documentIDIndex = documentIDIndex;
@@ -36,7 +36,7 @@ GENERATE2XML.prototype.generateXML = function () {
   for (var i = 0; i < this.arr.length; i++) {
 
     var process = new OrderSchema.Process();
-    process.id = this.arr2[i][this.processIndex];
+    process.id = this.arr2[i][0][this.processIndex];
     process.processType = this.processType;
     process.actionList = {};
     process.processPriority = {};
@@ -45,48 +45,55 @@ GENERATE2XML.prototype.generateXML = function () {
     var indexDataProcess = new OrderSchema.IndexData();
     var indexFieldListProcess = new OrderSchema.IndexFieldList();
 
+    //Creat Process IndexField
     var arrIndexFieldProcess = [];
     for(var t = 0; t < this.arrayName.length; t++){
-      if(this.arr2[i][t]&&this.arrayName[t].indexOf("pi_")==0){
+      if(this.arr2[i][0][t]&&this.arrayName[t].indexOf("pi_")==0){
         var tempOb = new OrderSchema.IndexField();
         tempOb.name = this.arrayName[t];
-        tempOb.value = this.arr2[i][t];
+        tempOb.value = this.arr2[i][0][t];
         arrIndexFieldProcess.push(tempOb);
       }
     }
 
 
     //------------------------------------------------------ document ------------------------------
-    var document = new OrderSchema.Document();
-    document.id = this.arr2[i][this.documentIDIndex];
-    document.documentType = this.documentType;
-    document.idType = {};
-    document.actionList = {};
-    document.inputType = {};
+    var arrDocument = [];
+    for(var k = 0; k < this.arr2[i].length; k++){
+      var document = new OrderSchema.Document();
+      document.id = this.arr2[i][k][this.documentIDIndex];
+      document.documentType = this.documentType;
+      document.idType = {};
+      document.actionList = {};
+      document.inputType = {};
 
-    //------------------------------------------------------ indexData for document ------------------------------
+      //------------------------------------------------------ indexData for document ------------------------------
 
-    var indexDataDocument = new OrderSchema.IndexData();
-    var indexFieldListDocument = new OrderSchema.IndexFieldList();
+      var indexDataDocument = new OrderSchema.IndexData();
+      var indexFieldListDocument = new OrderSchema.IndexFieldList();
 
-    var arrIndexFieldDocument = [];
-    for(var j = 0; j < this.arrayName.length; j++){
-      if(this.arr2[i][j]&&this.arrayName[j].indexOf("pi_")!=0&&this.arrayName[j] != "internal_id"&&this.arrayName[j] != "full_path"){
-        var tempOb = new OrderSchema.IndexField();
-        tempOb.name = this.arrayName[j];
-        tempOb.value = this.arr2[i][j];
-        arrIndexFieldDocument.push(tempOb);
+      //Create Document Index Field
+      var arrIndexFieldDocument = [];
+      for(var j = 0; j < this.arrayName.length; j++){
+        if(this.arr2[i][k][j]&&this.arrayName[j].indexOf("pi_")!=0&&this.arrayName[j] != "internal_id"&&this.arrayName[j] != "full_path"){
+          var tempOb = new OrderSchema.IndexField();
+          tempOb.name = this.arrayName[j];
+          tempOb.value = this.arr2[i][k][j];
+          arrIndexFieldDocument.push(tempOb);
+        }
       }
+
+      //------------------------------------------------------ push arrIndexFieldDocument ---> indexFieldList ------------------------------
+      indexFieldListDocument.indexField = arrIndexFieldDocument;
+      indexDataDocument.indexFieldList = indexFieldListDocument;
+
+      //------------------------------------------------------ push indexDataDocument ---> document ------------------------------
+      document.indexData = indexDataDocument;
+      arrDocument.push(document);
+
     }
-
-    //------------------------------------------------------ push document --> generate2orderxml ------------------------------
-    process.documentList = {document: document};
-    //------------------------------------------------------ push arrIndexFieldDocument ---> indexFieldList ------------------------------
-    indexFieldListDocument.indexField = arrIndexFieldDocument;
-    indexDataDocument.indexFieldList = indexFieldListDocument;
-
-    //------------------------------------------------------ push indexDataDocument ---> document ------------------------------
-    document.indexData = indexDataDocument;
+    //------------------------------------------------------push documents into a process------------------------------//
+    process.documentList = {document: arrDocument};
 
     //------------------------------------------------------ push arrIndexFieldProcess --> indexFieldList ------------------------------
     indexFieldListProcess.indexField = arrIndexFieldProcess;

@@ -6,15 +6,12 @@ var POSTORDERTOORDERSYSTEM = require('../include/PostOrderToOrderSystem');
 exports.htmlReading = function (req, res) {
   var StringofHTml = '';
   if (req.files.htmlfile.name) {
-//  fs.readdir(req.files.htmlfile.name.path, function (err, files) {
-//    if (!err) {
-//      for (var t = 0; t < 9; t++) {
-//        var FileName = files[t];
-//        fs.mkdirsSync('./public/xml/'+FileName);
-//        fs.writeFileSync('./public/xml/'+FileName+'/addSuccess.txt', 'List Of OrderID add Success');
-//        fs.writeFileSync('./public/xml/'+FileName+'/addFail.txt', 'List Of OrderID add Fail');
-//        fs.mkdirsSync('./public/xml/'+FileName+'/success/');
-//        fs.mkdirsSync('./public/xml/'+FileName+'/fail/');
+    var FileName = req.files.htmlfile.name;
+    fs.mkdirsSync('./public/xml/'+FileName);
+    fs.mkdirsSync('./public/xml/'+FileName+'/success');
+    fs.mkdirsSync('./public/xml/'+FileName+'/fail');
+    fs.writeFileSync('./public/xml/'+FileName+'/success/log.txt', "List OrderID add Successful!");
+    fs.writeFileSync('./public/xml/'+FileName+'/fail/log.txt', "List OrderID add Fail!");
     fs.readFile(req.files.htmlfile.path, function (err, data) {
 //          emptyDirectory('./public/xml/');
       if (!err) {
@@ -34,7 +31,7 @@ exports.htmlReading = function (req, res) {
         var indexOfOrderID = arrayName.indexOf('pi_order_id_str');
         var indexOfProcessID = arrayName.indexOf('pi_process_id_str');
         var indexOfStackID = arrayName.indexOf('pi_stack_id_str');
-        var indexOfDocumentID = arrayName.indexOf('document_id_str');
+        var indexOfDocumentID = arrayName.indexOf('document_id_str')
 
         //get list Rows
         var arrayListValues = Content.split('<tr valign="top">\n');
@@ -53,11 +50,13 @@ exports.htmlReading = function (req, res) {
         //creat group document same Order ID
         var arrContent = [];
         var arrContent2 = [];
-        var i = 0;
+        var arrContent3 = [];
+        var arrContent4 = [];
         while (arrayListValues.length != 0) {
 //        console.log(arrayListValues.length+'___'+i++);
           //order by OrderID
           var arrOrderProcess = [];
+          var arrOrderProcess2 = [];
           var arrSumOrder = [];
           var arrSumOrder2 = [];
           arrSumOrder.push(new Contentclass.Create(arrayName, arrayListValues[0]));
@@ -71,37 +70,41 @@ exports.htmlReading = function (req, res) {
               arrayListValues.splice(arrayListValues.indexOf(arrayListValues[k]), 1);
               k--;
             }
-            count++;
           }
           arrayListValues.splice(arrayListValues.indexOf(arrayListValues[0]), 1);
 
           //order by ProcessID on a OrderID
-//              while(arrSumOrder.length!=0) {
-//                var arrSumProcess = [];
-//                arrSumProcess.push(arrSumOrder[k]);
-//                //order by ProcessID
-//                for (var h = 0; h < arrSumOrder.length; h++) {
-//                  for (var k = 1)
-//                  if (arrSumOrder[h][0].pi_process_id_str == arrSumOrder[k].pi_process_id_str) {
-//                    console.log("in if");
-//                    arrSumProcess.push(arrSumOrder[h]);
-//                    arrSumOrder.splice(arrSumOrder.indexOf(arrSumOrder[h]), 1);
-//                  }
-//                }
-//                arrOrderProcess.push(arrSumProcess)
-//              }
-          arrContent.push(arrSumOrder);
-          arrContent2.push(arrSumOrder2);
-        }
+          while (arrSumOrder2.length != 0) {
+            var arrSumProcess = [];
+            var arrSumProcess2 = [];
+            arrSumProcess.push(arrSumOrder[0]);
+            arrSumProcess2.push(arrSumOrder2[0]);
+            //order by ProcessID
+            for (var h = 1; h < arrSumOrder2.length; h++) {
+              if (arrSumOrder2[h][indexOfProcessID] == arrSumOrder2[0][indexOfProcessID]) {
+                console.log(arrSumOrder2[0][indexOfProcessID]);
+                arrSumProcess.push(arrSumOrder[h]);
+                arrSumProcess2.push(arrSumOrder2[h]);
+                arrSumOrder2.splice(arrSumOrder2.indexOf(arrSumOrder2[h]), 1);
+                h--;
+              }
+            }
+            arrSumOrder2.splice(arrSumOrder2.indexOf(arrSumOrder2[h]), 1);
+            arrOrderProcess.push(arrSumProcess);
+            arrOrderProcess2.push(arrSumProcess2);
+          }
 
+          arrContent3.push(arrOrderProcess);
+          arrContent4.push(arrOrderProcess2);
+        }
         //Create xml:
         var arrListFileXml = [];
-        for (var i = 0; i < arrContent.length; i++) {
-          var xml = new GENERATE2XML(arrContent[i], arrContent2[i], arrayName, indexOfOrderID, indexOfProcessID, indexOfStackID, indexOfDocumentID).generateXML();
-          fs.writeFileSync('./public/xml/' + arrContent2[i][0][indexOfOrderID] + '.xml', xml);
-          arrListFileXml.push(arrContent2[i][0][indexOfOrderID]);
-//              POSTORDERTOORDERSYSTEM.execute(xml, arrContent2[i][0][indexOfOrderID], FileName, function () {
-//                  });
+        for (var i = 0; i < arrContent3.length; i++) {
+          var xml = new GENERATE2XML(arrContent3[i], arrContent4[i], arrayName, indexOfOrderID, indexOfProcessID, indexOfStackID, indexOfDocumentID).generateXML();
+          fs.writeFileSync('./public/xml/'+FileName+'/'+ arrContent4[i][0][0][indexOfOrderID] + '.xml', xml);
+          arrListFileXml.push(arrContent4[i][0][0][indexOfOrderID]);
+          POSTORDERTOORDERSYSTEM.execute(xml, arrContent4[i][0][0][indexOfOrderID], FileName, function () {
+          });
         }
         res.render('xmlView', { arrListFileXml: arrListFileXml });
       }
