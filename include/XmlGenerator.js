@@ -5,7 +5,7 @@ var js2xmlparser = require("js2xmlparser");
 var MANDANT = "wackler";
 var PROCESS_TYPE = "administration";
 var DOCUMENT_TYPE = "import_protocol";
-var GENERATE2XML = function (orderarr, orderarr2, arrayName, orderIndex, processIndexin, stackIndex) {
+var GENERATE2XML = function (orderarr, orderarr2, arrayName, orderIndex, processIndexin, stackIndex, documentIDIndex) {
   this.arr = orderarr;
   this.arr2 = orderarr2;
   this.arrayName = arrayName;
@@ -13,7 +13,7 @@ var GENERATE2XML = function (orderarr, orderarr2, arrayName, orderIndex, process
   this.stackId = orderarr2[0][stackIndex];
   this.processIndex = processIndexin;
 //  this.processId = orderarr.pi_process_id_str;
-//  this.documentId = orderarr.document_id_str;
+  this.documentIDIndex = documentIDIndex;
   this.mandant = MANDANT;
   this.processType = PROCESS_TYPE;
   this.documentType = DOCUMENT_TYPE;
@@ -58,7 +58,7 @@ GENERATE2XML.prototype.generateXML = function () {
 
     //------------------------------------------------------ document ------------------------------
     var document = new OrderSchema.Document();
-    document.id = this.arr[i].document_id_str
+    document.id = this.arr2[i][this.documentIDIndex];
     document.documentType = this.documentType;
     document.idType = {};
     document.actionList = {};
