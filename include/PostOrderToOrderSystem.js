@@ -26,10 +26,12 @@ exports.execute = function (OrderString, OrderID, cb) {
       if(response.statusCode == 200){
         //Log to success:
         logger.log(OrderID,"Success","");
+        console.log("success");
       }
       else{
         // Log to Fail
         logger.log(OrderID,"Fail","");
+        console.log("fail");
       }
       cb();
     }
