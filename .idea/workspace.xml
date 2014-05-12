@@ -62,7 +62,7 @@
       <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="0" selection-start="235" selection-end="235" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
+            <state line="4" column="83" selection-start="205" selection-end="205" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
               <folding />
             </state>
           </provider>
@@ -80,7 +80,7 @@
       <file leaf-file-name="run.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="125" column="5" selection-start="5351" selection-end="5351" vertical-scroll-proportion="2.578059" vertical-offset="903" max-vertical-offset="2601">
+            <state line="134" column="7" selection-start="5680" selection-end="5680" vertical-scroll-proportion="0.39029536" vertical-offset="2093" max-vertical-offset="2652">
               <folding />
             </state>
           </provider>
@@ -137,8 +137,8 @@
         <option value="$PROJECT_DIR$/routes/main.js" />
         <option value="$PROJECT_DIR$/include/PostOrderToOrderSystem.js" />
         <option value="$PROJECT_DIR$/include/XmlGenerator.js" />
-        <option value="$PROJECT_DIR$/run.js" />
         <option value="$PROJECT_DIR$/config/index.js" />
+        <option value="$PROJECT_DIR$/run.js" />
       </list>
     </option>
   </component>
@@ -510,14 +510,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/config/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="0" selection-start="235" selection-end="235" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
+        <state line="4" column="83" selection-start="205" selection-end="205" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="5" selection-start="5351" selection-end="5351" vertical-scroll-proportion="2.578059" vertical-offset="903" max-vertical-offset="2601">
+        <state line="134" column="7" selection-start="5680" selection-end="5680" vertical-scroll-proportion="0.39029536" vertical-offset="2093" max-vertical-offset="2652">
           <folding />
         </state>
       </provider>
