@@ -127,24 +127,24 @@ function ReadFilesAndPostOrderXMLs(n, HTMLs) {
 }
 
 function PostXml(i, length, arrcontent, arrcontent2, arrayname, indexoforderid, indexofprocessid, indexofstackid, indexofdocumentid, cb) {
-  if(i == length-1){
+  if (i < length) {
     var xml = new GENERATE2XML(arrcontent[i], arrcontent2[i], arrayname, indexoforderid, indexofprocessid, indexofstackid, indexofdocumentid).generateXML();
     //Post
-    POSTORDERTOORDERSYSTEM.execute(xml, arrcontent2[i][0][0][indexoforderid], function () {
-      PostXml(i + 1, length, arrcontent, arrcontent2, arrayname, indexoforderid, indexofprocessid, indexofstackid, indexofdocumentid, cb);
-    });
-  }
-  else{
-    if (i < length) {
+    if (i == length - 1) {
       var xml = new GENERATE2XML(arrcontent[i], arrcontent2[i], arrayname, indexoforderid, indexofprocessid, indexofstackid, indexofdocumentid).generateXML();
       //Post
+      POSTORDERTOORDERSYSTEM.execute(xml, arrcontent2[i][0][0][indexoforderid], function () {
+        PostXml(i + 1, length, arrcontent, arrcontent2, arrayname, indexoforderid, indexofprocessid, indexofstackid, indexofdocumentid, cb);
+      });
+    }
+    else {
       POSTORDERTOORDERSYSTEM.execute(xml, arrcontent2[i][0][0][indexoforderid], function () {
       });
       PostXml(i + 1, length, arrcontent, arrcontent2, arrayname, indexoforderid, indexofprocessid, indexofstackid, indexofdocumentid, cb);
     }
-    else {
-      cb();
-      console.log("one file Complete!");
-    }
+  }
+  else {
+    cb();
+    console.log("one file Complete!");
   }
 }
