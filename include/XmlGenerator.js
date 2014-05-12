@@ -79,7 +79,7 @@ GENERATE2XML.prototype.generateXML = function () {
       //Create Document Index Field
       var arrIndexFieldDocument = [];
       for(var j = 0; j < this.arrayName.length; j++){
-        if(this.arr2[i][k][j]&&this.arrayName[j].indexOf("pi_")!=0&&this.arrayName[j] != "internal_id"&&this.arrayName[j] != "full_path"){
+        if(this.arr2[i][k][j]&&this.arrayName[j].indexOf("pi_")!=0&&this.arrayName[j] != "internal_id"&&this.arrayName[j] != "full_path"&&this.arrayName[j]!="recovery_id_ftxt"&&this.arrayName[j]!="recovery_id_str"&&this.arrayName[j]!="page_count_int"){
           var tempOb = new OrderSchema.IndexField();
           tempOb.name = this.arrayName[j];
           tempOb.value = this.arr2[i][k][j];
