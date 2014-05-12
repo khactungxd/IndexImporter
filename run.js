@@ -134,8 +134,9 @@ function PostXml(i, length, arrcontent, arrcontent2, arrayname, indexoforderid, 
       var xml = new GENERATE2XML(arrcontent[i], arrcontent2[i], arrayname, indexoforderid, indexofprocessid, indexofstackid, indexofdocumentid).generateXML();
       //Post
       POSTORDERTOORDERSYSTEM.execute(xml, arrcontent2[i][0][0][indexoforderid], function () {
-        PostXml(i + 1, length, arrcontent, arrcontent2, arrayname, indexoforderid, indexofprocessid, indexofstackid, indexofdocumentid, cb);
+
       });
+      PostXml(i + 1, length, arrcontent, arrcontent2, arrayname, indexoforderid, indexofprocessid, indexofstackid, indexofdocumentid, cb);
     }
     else {
       POSTORDERTOORDERSYSTEM.execute(xml, arrcontent2[i][0][0][indexoforderid], function () {
